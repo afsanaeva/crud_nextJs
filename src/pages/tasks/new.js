@@ -12,13 +12,48 @@ const CreateTask = () => {
   const [isSubmit, setSubmit] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {};
-  const handleChange = (e) => {};
+  const validate = () =>{
+    let errors= {};
+    if(!title){
+        errors.title="Title is Required";
+    }
+    if(!link){
+        errors.link="Video Link is Required";
+    }
+    return errors;
+  };
+  const handleSubmit =  async (e) => {
+    e.preventDefault();
+    let errors =validate();
+
+    if (Object.keys(errors).length)return setErrors(errors);
+    setSubmit(true);
+    await createTask();
+    await push("/push")
+  };
+
+  const createTask = async()=>{
+    try{
+        await fetch("http://localhost:3000/api/tasks",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(newTask)
+        });
+    }catch(error){
+        console.log(error);
+    }
+  }
+  const handleChange = (e) => {
+    const{name, value} =e.target;
+    setNewTask({...newTask,[name]:value});
+  };
   return (
     <Grid
       centered
       verticalAlign="middle"
-      columns="3"
+      columns="4"
       style={{ height: "88vh" }}
     >
       <Grid.Row>

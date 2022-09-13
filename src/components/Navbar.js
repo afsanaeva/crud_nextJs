@@ -24,7 +24,7 @@ export const Navbar = () => {
               primary
               onClick={() => router.push("/tasks/new")}
             >
-              New Video
+              Add New Video
             </Button>
           </Menu.Item>
         </Menu.Menu>
