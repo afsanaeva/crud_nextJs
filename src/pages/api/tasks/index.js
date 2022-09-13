@@ -26,5 +26,7 @@ export default async (req,res) => {
         } catch(err){
             return res.status(400).json({msg: err.message}); 
         }
+        default:
+            return  res.status(404).json({ msg: "This method doesn't exists"});
     }
 };

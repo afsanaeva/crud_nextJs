@@ -15,21 +15,38 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const tasks = await Task.findById(id);
+        const task = await Task.findById(id);
         if (!task) return res.status(404).json({ msg: "Video doesn't Exists" });
         await runMiddleware(req, res, morgan);
         return res.status(200).json(task);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
-    case "POST":
-      try {
-        const newTask = new Task(body);
-        const savedTask = await newTask.save();
-        await runMiddleware(req, res, morgan);
-        return res.status(200).json(savedTask);
-      } catch (err) {
-        return res.status(400).json({ msg: err.message });
-      }
+
+      case "DELETE":
+        try {
+          const deletedTask = await Task.findByIdAndDelete(id);
+          if(!deletedTask)
+          return res.status(400).json({ msg: "Video doesn't exists"});
+          await runMiddleware(req, res, morgan);
+          return res.status(200).json();
+        } catch (err) {
+          return res.status(400).json({ msg: err.message });
+        }
+
+        case "PUT":
+          try {
+            const updatedTask = await Task.findByIdAndUpdate(id, body,{
+              new:true,
+              runValidators:true,
+            });
+            if(!updatedTask)
+            return  res.status(404).json({ msg: "Video doesn't exists"});
+            return res.status(200).json(updatedTask);
+          } catch (err) {
+            return res.status(400).json({ msg: err.message });
+          }
+          default:
+            return  res.status(404).json({ msg: "This method doesn't exists"});
   }
 };
