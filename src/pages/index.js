@@ -1,9 +1,72 @@
-import styles from '../styles/Home.module.css'
+import { Button, Container, Card, Grid} from "semantic-ui-react";
+import { Link } from "next/link";
+import { useRouter } from "next/router";
+export default function Home({ tasks = [] }) {
+  if (tasks.length === 0) {
+    return (
+      <Grid
+        centered
+        verticalAlign="middle"
+        columns="1"
+        style={{ height: "88vh" }}
+      >
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <h1>There are no videos available.Please add one</h1>
+            <div>
+              <Button primary onClick={() => router.push("/tasks/new")}>
+                Add Video
+              </Button>
+            </div>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+  }
 
-export default function Home() {
   return (
-    <div className={styles.container}>
-    <h1>Video Manager App</h1>
-    </div>
-  )
+    <Container>
+      <Card.Group itemsPerRow={4}>
+        {tasks &&
+          tasks.map((task) => (
+            <Card key={tasks._id}>
+              <Card.Content>
+                <Card.Header>
+                  {/* <Link href={`/tasks/${task._id}`}>
+                    <a>{task.title}</a>
+                  </Link> */}
+                </Card.Header>
+                <p>{task.link}</p>
+              </Card.Content>
+              <Card.Content extra>
+                <Button
+ 
+                  color="orange"
+                  onClick={() => router.push(`/tasks/${task._id}`)}
+                >
+                  View
+                </Button>
+                <Button
+                 
+                  color="blue"
+                  onClick={() => router.push(`/tasks/${task._id}/edit`)}
+                >
+                  Edit
+                </Button>
+              </Card.Content>
+            </Card>
+          ))}
+      </Card.Group>
+    </Container>
+  );
+}
+
+export async function getServerSideProps(){
+  const response = await fetch("http://localhost:3000/api/tasks");
+  const tasks = await response.json();
+  return{
+    props:{
+      tasks,
+    },
+  };
 }

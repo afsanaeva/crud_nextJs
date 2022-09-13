@@ -1,5 +1,5 @@
 import { Menu, Container, Button } from "semantic-ui-react";
-import { Link } from "next/link";
+// import { Link } from "next/link";
 import { useRouter } from 'next/router';
 
 export const Navbar = () => {
@@ -14,7 +14,7 @@ export const Navbar = () => {
       <Container>
         <Menu.Item name="home">
           {/* <Link href="/">
-            <img src= />
+            <img src= "/vercel.svg"/>
           </Link> */}
         </Menu.Item>
         <Menu.Menu position="right">
