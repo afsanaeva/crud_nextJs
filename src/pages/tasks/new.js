@@ -7,10 +7,20 @@ const CreateTask = () => {
     title: "",
     link: "",
   });
-  const {title, link} =newTask;
+  const {title, link} = newTask;
   const { push , query} = useRouter();
   const [isSubmit, setSubmit] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const getTask = async () =>{
+    const response = await fetch(`http://localhost:3000/api/tasks/${query.id}`);
+    const data = await response.json();
+    setNewTask({title: data.title, link:data.link});
+  };
+
+  useEffect(() => {
+    if (query.id) getTask();
+  } ,[query.id]);
 
   const validate = () =>{
     let errors= {};
@@ -28,10 +38,30 @@ const CreateTask = () => {
 
     if (Object.keys(errors).length)return setErrors(errors);
     setSubmit(true);
+
+    if(query.id){
+      await updateTask();
+    }else{
+      await createTask();
+    }
+
     await createTask();
     await push("/push")
   };
-
+  const updateTask = async()=>{
+    try{
+        await fetch(`http://localhost:3000/api/tasks/${query.id}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(newTask)
+        });
+    }catch(error){
+        console.log(error);
+    }
+  };
+  
   const createTask = async()=>{
     try{
         await fetch("http://localhost:3000/api/tasks",{
@@ -44,7 +74,8 @@ const CreateTask = () => {
     }catch(error){
         console.log(error);
     }
-  }
+  };
+
   const handleChange = (e) => {
     const{name, value} =e.target;
     setNewTask({...newTask,[name]:value});
@@ -59,7 +90,7 @@ const CreateTask = () => {
       <Grid.Row>
         <Grid.Column textAlign="center">
           <div> 
-          <h1> Add New Video</h1>
+          <h1>{query.id ? "Update Video" : "Add New Video"} </h1>
           <div>
             {isSubmit ? (
               <Loader active inline="centered" />
@@ -80,7 +111,9 @@ const CreateTask = () => {
                 onChange={handleChange}
                 value={link}
                 />
-                <Button type="submit">Add</Button>
+                <Button type="submit" primary>
+                {query.id ? "Update" : "Add" }
+                </Button>
               </Form>
             )}
             </div>
