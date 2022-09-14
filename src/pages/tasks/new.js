@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { Button, Form, Loader, Grid } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
@@ -8,7 +8,7 @@ const CreateTask = () => {
     link: "",
   });
   const {title, link} =newTask;
-  const { push } = useRouter();
+  const { push , query} = useRouter();
   const [isSubmit, setSubmit] = useState(false);
   const [errors, setErrors] = useState({});
 

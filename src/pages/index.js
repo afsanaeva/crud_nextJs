@@ -4,6 +4,7 @@ import ReactPlayer from "react-player/youtube";
 // import { Link } from "next/link";
 import { useRouter } from "next/router";
 export default function Home({ tasks = [] }) {
+  const router = useRouter();
   if (tasks.length === 0) {
     return (
       <Grid

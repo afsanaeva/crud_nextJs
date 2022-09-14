@@ -20,7 +20,7 @@ export const Navbar = () => {
         <Menu.Menu position="right">
           <Menu.Item>
             <Button
-              size="mini"
+              
               primary
               onClick={() => router.push("/tasks/new")}
             >
