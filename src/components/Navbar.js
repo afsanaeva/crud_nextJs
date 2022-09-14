@@ -22,7 +22,7 @@ export const Navbar = () => {
             <Button
               
               primary
-              onClick={() => router.push("/tasks/new")}
+              onClick={() => router.push("/videos/new")}
             >
               Add New Video
             </Button>

@@ -4,15 +4,15 @@ import ReactPlayer from "react-player/youtube";
 import { Button, Confirm, Card, Grid } from "semantic-ui-react";
 import Error from "next/error";
 
-const Task = ({ task, error }) => {
+const Video = ({ video, error }) => {
   const [confirm, setConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { push, query } = useRouter();
 
-  const deleteTask = async () => {
+  const deleteVideo = async () => {
     const { id } = query;
     try {
-      await fetch(`http://localhost:3000/api/tasks/${id}`, {
+      await fetch(`http://localhost:3000/api/videos/${id}`, {
         method: "DELETE",
       });
     } catch (error) {
@@ -25,7 +25,7 @@ const Task = ({ task, error }) => {
 
   const handleDelete =async ()=>{
     setIsDeleting(true);
-    await deleteTask();
+    await deleteVideo();
     await push("/");
     close();
   };
@@ -46,11 +46,11 @@ const Task = ({ task, error }) => {
         <Grid.Column textAlign="center">
           <Card centered  style={{ height:"49vh", width: "69vh" }}>
             <Card.Content>
-              <Card.Header><h1>{task.title}</h1></Card.Header>
+              <Card.Header><h1>{video.title}</h1></Card.Header>
               <Card.Description>
               <ReactPlayer
                   className="react-player"
-                  url={task.link}
+                  url={video.link}
                  
                 />
              </Card.Description>
@@ -76,12 +76,12 @@ const Task = ({ task, error }) => {
 };
 
 export async function getServerSideProps({ query: { id } }) {
-  const res = await fetch(`http://localhost:3000/api/tasks/${id}`);
+  const res = await fetch(`http://localhost:3000/api/videos/${id}`);
   if (res.status === 200) {
-    const task = await res.json();
+    const video = await res.json();
     return {
       props: {
-        task,
+        video,
       },
     };
   }
@@ -96,4 +96,4 @@ export async function getServerSideProps({ query: { id } }) {
   };
 }
 
-export default Task;
+export default Video;

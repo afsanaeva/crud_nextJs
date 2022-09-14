@@ -3,9 +3,9 @@ import { Button, Container, Card, Grid } from "semantic-ui-react";
 import ReactPlayer from "react-player/youtube";
 // import { Link } from "next/link";
 import { useRouter } from "next/router";
-export default function Home({ tasks = [] }) {
+export default function Home({ videos = [] }) {
   const router = useRouter();
-  if (tasks.length === 0) {
+  if (videos.length === 0) {
     return (
       <Grid
         centered
@@ -17,7 +17,7 @@ export default function Home({ tasks = [] }) {
           <Grid.Column textAlign="center">
             <h1>There are no videos available.Please add one</h1>
             <div>
-              <Button primary onClick={() => router.push("/tasks/new")}>
+              <Button primary onClick={() => router.push("/videos/new")}>
                 Add Video
               </Button>
             </div>
@@ -30,18 +30,18 @@ export default function Home({ tasks = [] }) {
   return (
     <Container>
       <Card.Group itemsPerRow={4}>
-        {tasks &&
-          tasks.map((task) => (
-            <Card key={tasks._id}>
+        {videos &&
+          videos.map((video) => (
+            <Card key={videos._id}>
               <Card.Content >
                 <Card.Header >
-                  {/* <Link href={`/tasks/${task._id}`}> */}
-                  <a >{task.title}</a>
+                  {/* <Link href={`/videos/${video._id}`}> */}
+                  <a >{video.title}</a>
                   {/* </Link> */}
                 </Card.Header>
                 <ReactPlayer
                   className="react-player"
-                  url={task.link}
+                  url={video.link}
                   width="100%"
                   height="100%"
                 />
@@ -49,13 +49,13 @@ export default function Home({ tasks = [] }) {
               <Card.Content extra>
                 <Button
                   color="orange"
-                  onClick={() => router.push(`/tasks/${task._id}`)}
+                  onClick={() => router.push(`/videos/${video._id}`)}
                 >
                   View
                 </Button>
                 <Button
                   color="blue"
-                  onClick={() => router.push(`/tasks/${task._id}/edit`)}
+                  onClick={() => router.push(`/videos/${video._id}/edit`)}
                 >
                   Edit
                 </Button>
@@ -68,11 +68,11 @@ export default function Home({ tasks = [] }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch("http://localhost:3000/api/tasks");
-  const tasks = await response.json();
+  const response = await fetch("http://localhost:3000/api/videos");
+  const videos = await response.json();
   return {
     props: {
-      tasks,
+      videos,
     },
   };
 }

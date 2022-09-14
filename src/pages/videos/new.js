@@ -2,24 +2,24 @@ import React,{ useState, useEffect } from "react";
 import { Button, Form, Loader, Grid } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
-const CreateTask = () => {
-  const[newTask, setNewTask] = useState({
+const CreateVideo = () => {
+  const[newVideo, setNewVideo] = useState({
     title: "",
     link: "",
   });
-  const {title, link} = newTask;
+  const {title, link} = newVideo;
   const { push , query} = useRouter();
   const [isSubmit, setSubmit] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const getTask = async () =>{
-    const response = await fetch(`http://localhost:3000/api/tasks/${query.id}`);
+  const getVideo = async () =>{
+    const response = await fetch(`http://localhost:3000/api/videos/${query.id}`);
     const data = await response.json();
-    setNewTask({title: data.title, link:data.link});
+    setNewVideo({title: data.title, link:data.link});
   };
 
   useEffect(() => {
-    if (query.id) getTask();
+    if (query.id) getVideo();
   } ,[query.id]);
 
   const validate = () =>{
@@ -40,36 +40,36 @@ const CreateTask = () => {
     setSubmit(true);
 
     if(query.id){
-      await updateTask();
+      await updateVideo();
     }else{
-      await createTask();
+      await createVideo();
     }
 
-    await createTask();
+    await createVideo();
     await push("/push")
   };
-  const updateTask = async()=>{
+  const updateVideo = async()=>{
     try{
-        await fetch(`http://localhost:3000/api/tasks/${query.id}`,{
+        await fetch(`http://localhost:3000/api/videos/${query.id}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify(newTask)
+            body:JSON.stringify(newVideo)
         });
     }catch(error){
         console.log(error);
     }
   };
   
-  const createTask = async()=>{
+  const createVideo = async()=>{
     try{
-        await fetch("http://localhost:3000/api/tasks",{
+        await fetch("http://localhost:3000/api/videos",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify(newTask)
+            body:JSON.stringify(newVideo)
         });
     }catch(error){
         console.log(error);
@@ -78,7 +78,7 @@ const CreateTask = () => {
 
   const handleChange = (e) => {
     const{name, value} =e.target;
-    setNewTask({...newTask,[name]:value});
+    setNewVideo({...newVideo,[name]:value});
   };
   return (
     <Grid
@@ -124,4 +124,4 @@ const CreateTask = () => {
   );
 };
 
-export default CreateTask;
+export default CreateVideo;

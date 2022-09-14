@@ -1,6 +1,6 @@
 import { Schema, model,models } from "mongoose";
 
-const TaskSchema =new Schema(
+const VideoSchema =new Schema(
     {
         title:{
             type:String,
@@ -25,4 +25,4 @@ const TaskSchema =new Schema(
         versionKey:false
     }
 );
-export default models.Task || model("Task",TaskSchema);
+export default models.Video || model("Video",VideoSchema);

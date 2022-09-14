@@ -1,4 +1,4 @@
-import Task from "../../../model/Task";
+import Video from "../../../model/Video";
 import { dbConnect, runMiddleware } from "../../../utils/index";
 import Morgan from "morgan";
 
@@ -15,18 +15,18 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const task = await Task.findById(id);
-        if (!task) return res.status(404).json({ msg: "Video doesn't Exists" });
+        const video = await Video.findById(id);
+        if (!video) return res.status(404).json({ msg: "Video doesn't Exists" });
         await runMiddleware(req, res, morgan);
-        return res.status(200).json(task);
+        return res.status(200).json(video);
       } catch (err) {
         return res.status(400).json({ msg: err.message });
       }
 
       case "DELETE":
         try {
-          const deletedTask = await Task.findByIdAndDelete(id);
-          if(!deletedTask)
+          const deletedVideo = await Video.findByIdAndDelete(id);
+          if(!deletedVideo)
           return res.status(400).json({ msg: "Video doesn't exists"});
           await runMiddleware(req, res, morgan);
           return res.status(200).json();
@@ -36,13 +36,13 @@ export default async (req, res) => {
 
         case "PUT":
           try {
-            const updatedTask = await Task.findByIdAndUpdate(id, body,{
+            const updatedVideo = await Video.findByIdAndUpdate(id, body,{
               new:true,
               runValidators:true,
             });
-            if(!updatedTask)
+            if(!updatedVideo)
             return  res.status(404).json({ msg: "Video doesn't exists"});
-            return res.status(200).json(updatedTask);
+            return res.status(200).json(updatedVideo);
           } catch (err) {
             return res.status(400).json({ msg: err.message });
           }
